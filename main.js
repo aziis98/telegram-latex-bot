@@ -8,12 +8,14 @@ const TelegrafLogger = require('telegraf-logger');
 loadDovEnvFile();
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
-const logger = new TelegrafLogger();
+const logger = new TelegrafLogger({
+    format: '[TelegrafLogger] %ut => @%u %fn %ln (%fi): <%ust> %c'
+});
 
 bot.use(logger.middleware());
 
 bot.command(['render', 'render@latexit_bot'], async ({ message, from, chat, replyWithMarkdown, replyWithPhoto }) => {
-    console.log(`@${from.username} ${chat.title ? `in ${chat.title} ` : ''}sent: ${message.text}`);
+    console.log(`[Bot] @${from.username} ${chat.title ? `in "${chat.title}" ` : ''}sent: ${message.text}`);
 
     const expression = message.text.replace(/^\/render.*?( |$)/, '');
 
@@ -30,7 +32,7 @@ bot.command(['render', 'render@latexit_bot'], async ({ message, from, chat, repl
 });
 
 bot.catch((err) => {
-    console.log('Ooops', err)
+    console.log('[Bot] Ooops', err)
 });
 
 bot.launch();

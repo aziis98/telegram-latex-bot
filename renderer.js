@@ -44,7 +44,7 @@ module.exports = {
 
         const onlyName = path.basename(basenamePath);
 
-        console.log(`[${onlyName}.tex] Rendering image... `);
+        console.log(`[Renderer] [${onlyName}] Rendering image... `);
 
         await writeFile(basenamePath + '.tex', renderLatexTemplate(expression), 'utf8');
 
@@ -56,16 +56,16 @@ module.exports = {
                 10e3
             );
         } catch (e) {
-            console.error('Processing took too long!');
+            console.error(`[Renderer] [${onlyName}] Processing took too long!`);
         }
         
         const deltaTime = new Date().getTime() - startTime;
-        console.log(`Processing took ${deltaTime}ms`);
+        console.log(`[Renderer] [${onlyName}] Processing took ${deltaTime}ms`);
 
         // Deletes files after 1min
         setTimeout(() => {
             exec(`cd ${RENDER_FOLDER}; rm ${basenamePath}.*`).then(() => {
-                console.log(`Removed tempfiles "${onlyName}.*"`);
+                console.log(`[Renderer] [${onlyName}] Removed tempfiles "${onlyName}.*"`);
             });    
         }, 60e3);
 
