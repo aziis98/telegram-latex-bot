@@ -40,16 +40,19 @@ function renderLatexTemplate(expression, inlineMode) {
 module.exports = {
     renderLaTeX: async function (expression) {
 
-        const basename = generateFilename();
-        console.log(`[${basename}.tex] Rendering image... `);
+        const basenamePath = generateFilename();
 
-        await writeFile(basename + '.tex', renderLatexTemplate(expression), 'utf8');
+        const onlyName = path.basename(basenamePath);
+
+        console.log(`[${onlyName}.tex] Rendering image... `);
+
+        await writeFile(basenamePath + '.tex', renderLatexTemplate(expression), 'utf8');
 
         const startTime = new Date().getTime();
 
         try {
             await runWithTimeout(exec(
-                `cd ${RENDER_FOLDER}; pdflatex -halt-on-error "${basename}.tex"; convert -density 600 "${basename}.pdf" -background white -flatten -adaptive-resize 50% -adaptive-resize 75% "${basename}.png"`),
+                `cd ${RENDER_FOLDER}; pdflatex -halt-on-error "${basenamePath}.tex"; convert -density 600 "${basenamePath}.pdf" -background white -flatten -adaptive-resize 50% -adaptive-resize 75% "${basenamePath}.png"`),
                 10e3
             );
         } catch (e) {
@@ -59,10 +62,13 @@ module.exports = {
         const deltaTime = new Date().getTime() - startTime;
         console.log(`Processing took ${deltaTime}ms`);
 
-        exec(`cd ${RENDER_FOLDER}; rm ${basename}.*`).then(() => {
-            console.log(`Removed tempfiles "${basename}.*"`);
-        });
+        // Deletes files after 1min
+        setTimeout(() => {
+            exec(`cd ${RENDER_FOLDER}; rm ${basenamePath}.*`).then(() => {
+                console.log(`Removed tempfiles "${onlyName}.*"`);
+            });    
+        }, 60e3);
 
-        return basename + '.png';
+        return basenamePath + '.png';
     }
 }
