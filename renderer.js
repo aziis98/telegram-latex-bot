@@ -7,8 +7,6 @@ const exec = util.promisify(require('child_process').exec);
 
 const RENDER_FOLDER = '.renders';
 
-exec(`mkdir -p ${RENDER_FOLDER}`);
-
 function runWithTimeout(promise, timeout) {
     return Promise.race([
         promise,
