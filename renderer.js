@@ -2,10 +2,12 @@
 const path = require('path');
 const util = require('util');
 
-const { writeFile } = require('fs/promises');
+const { writeFile, mkdir } = require('fs/promises');
 const exec = util.promisify(require('child_process').exec);
 
 const RENDER_FOLDER = '.renders';
+
+exec(`mkdir -p ${RENDER_FOLDER}`);
 
 function runWithTimeout(promise, timeout) {
     return Promise.race([
@@ -64,7 +66,7 @@ module.exports = {
 
         // Deletes files after 1min
         setTimeout(() => {
-            exec(`cd ${RENDER_FOLDER}; rm ${basenamePath}.*`).then(() => {
+            exec(`cd ${RENDER_FOLDER}; rm -f ${basenamePath}.*`).then(() => {
                 console.log(`[Renderer] [${onlyName}] Removed tempfiles "${onlyName}.*"`);
             });    
         }, 60e3);
