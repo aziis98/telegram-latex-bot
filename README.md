@@ -1,6 +1,6 @@
 # Telegram LaTeX Bot
 
-A simple Telegram Bot to render LaTeX.
+A simple Telegram Bot to render LaTeX made using the https://telegraf.js.org/ NodeJS package.
 
 ## Commands
 
