@@ -19,14 +19,19 @@ bot.command(['render', 'render@latexit_bot'], async ({ message, from, chat, repl
 
     const expression = message.text.replace(/^\/render.*?( |$)/, '');
 
-    if (!expression.trim().length) {
-        return await replyWithMarkdown(
-            "Usage:\n  `/render <latex expression>`",
-            { disable_notification: true }
-        );
-    }
+    if (!expression.trim().length)
+        return await replyWithMarkdown("Usage:\n  `/render <latex expression>`", { disable_notification: true });
 
     const imageFilePath = await renderLaTeX(expression);
+
+    if (!imageFilePath) {
+        await replyWithMarkdown("Sorry, I couldn't render the expression", { disable_notification: true });
+        
+        if (Math.random() < 0.2) 
+            await replyWithMarkdown("(better error messages are coming soon)", { disable_notification: true });
+
+        return;
+    }
 
     await replyWithPhoto({ source: imageFilePath });
 });

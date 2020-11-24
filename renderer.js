@@ -57,10 +57,18 @@ module.exports = {
             );
         } catch (e) {
             console.error(`[Renderer] [${onlyName}] Processing took too long!`);
+            
+            exec(`cd ${RENDER_FOLDER}; rm -f ${basenamePath}.*`).then(() => {
+                console.log(`[Renderer] [${onlyName}] Immediatly removed tempfiles "${onlyName}.*"`);
+            }); 
+
+            return null;
+        } finally {
+            
+            const deltaTime = new Date().getTime() - startTime;
+            console.log(`[Renderer] [${onlyName}] Processing took ${deltaTime}ms`);
+    
         }
-        
-        const deltaTime = new Date().getTime() - startTime;
-        console.log(`[Renderer] [${onlyName}] Processing took ${deltaTime}ms`);
 
         // Deletes files after 1min
         setTimeout(() => {
@@ -68,7 +76,7 @@ module.exports = {
                 console.log(`[Renderer] [${onlyName}] Removed tempfiles "${onlyName}.*"`);
             });    
         }, 60e3);
-
+        
         return basenamePath + '.png';
     }
 }
