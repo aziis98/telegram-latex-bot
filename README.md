@@ -28,6 +28,8 @@ BOT_TOKEN=...
 
 - Add custom rendering settings
 - Think more about the actual safty of this bot (this was made very quickly in just ~2h)
+    
+    An idea could be to host this bot personally and ad a way of marking trusted users by the bot
 
 
 
