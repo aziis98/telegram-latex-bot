@@ -27,9 +27,11 @@ BOT_TOKEN=...
 ## TODO
 
 - Add custom rendering settings
-- Think more about the actual safty of this bot (this was made very quickly in just ~2h)
+- Think more about the actual safety of this bot (this was made very quickly in just ~2h)
     
     An idea could be to host this bot personally and ad a way of marking trusted users by the bot
+
+    Now there is a Dockerfile for containerizatoin ([./Dockerfile](./Dockerfile))
 
 
 
