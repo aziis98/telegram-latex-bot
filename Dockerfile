@@ -2,9 +2,8 @@ FROM node:15
 
 WORKDIR /home/node/bot
 
-RUN apt update
-RUN apt install texlive
-RUN apt install imagemagik
+RUN apt update -q
+RUN apt install -qy texlive imagemagik
 
 COPY . .
 
